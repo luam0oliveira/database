@@ -21,7 +21,7 @@ class CsvRepository:
 			if not isinstance(item, ModificationEntry): continue
 			csvText += f"{str(item)}\n"
 
-		self.fileAdapter.writeToFile(f"{self.path}/history.csv", csvText)
+		self.fileAdapter.appendToFile(f"{self.path}/history.csv", csvText)
 
 	def load(self):
 		csvText = self.fileAdapter.readFile(f"{self.path}/storage.csv")
