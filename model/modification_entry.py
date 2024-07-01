@@ -1,6 +1,6 @@
 import uuid
 import datetime
-from .storage_item import StorageItem
+from model.storage_item import StorageItem
 
 class ModificationEntry:
 	def __init__(self, id=str(uuid.uuid4()), timestamp=datetime.datetime.today().timestamp(), type="Criação", item=None):
