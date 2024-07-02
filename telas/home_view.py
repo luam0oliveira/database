@@ -3,8 +3,10 @@ from functools import partial
 import tkinter as TK
 
 from model.csv_repository import CsvRepository
+from model.modification_entry import ModificationEntry
 from telas.create_product_view import CreateProductView
 from telas.delete_product_view import DeleteProductView
+from telas.modifications_view import ModificationsView
 from telas.scrollable_stock_list import  ScrollableStockList
 
 
@@ -12,13 +14,14 @@ class Home(TK.Tk):
 	def __init__(self):
 		super().__init__()
 		self.container = TK.Frame(self.master)
-		self.container.rowconfigure((0), weight=1)
+		self.container.rowconfigure((0), weight=1, minsize= 50)
 		self.container.rowconfigure((1), weight=9)
 		self.container.columnconfigure((0), weight=1)
 		self.csvRepository = CsvRepository()
+		self.modifications = []
 		self.storage = self.csvRepository.load()
 		self.inicializar()
-	
+
 	def inicializar(self):
 		self.__add_header(self.container)
 		self.__add_table()
@@ -28,13 +31,13 @@ class Home(TK.Tk):
 		self.table.destroy()
 		self.__add_table()
 	
-
 	def callback(self, index, field, getValueFromEntry):
 		entryValue = getValueFromEntry()
 		storageValue = getattr(self.storage[index], field)
-		if entryValue != storageValue:
+		if entryValue != str(storageValue):
+			modification = ModificationEntry(type="Modificação", item = self.storage[index])
+			self.modifications.append(modification)
 			setattr(self.storage[index], field, entryValue)
-
 
 	def __add_table(self):
 		self.table = ScrollableStockList(self.container)
@@ -58,15 +61,27 @@ class Home(TK.Tk):
 		button.pack(side="left")
 		
 	def __add_button_salvar(self, master):
-		button = TK.Button(master, text="Salvar", command=self.__call_save)
-		button.pack(side="right")
+		self.buttonSave = TK.Button(master, text="Salvar", command=self.__call_save)
+		self.buttonSave.pack(side="right")
 
 	def __call_create_product(self):
 		createProductView = CreateProductView(self.create_product, self)
 		createProductView.mainloop()
 
 	def __call_save(self):
+		# modificationsView = ModificationsView(self.modifications, self)
+		# modificationsView.mainloop()
+		columns = ['id', 'name', 'amount', 'price']
+		campo = self.focus_get()
+		if isinstance(campo, TK.Entry):
+			info = campo.grid_info()
+			self.callback(info['row']-1, columns[info['column']], campo.get)
+
+		self.buttonSave.focus()
 		self.csvRepository.save(self.storage)
+		if len(self.modifications):
+			self.csvRepository.saveHistory(self.modifications)
+			self.modifications.clear()
 	
 	def __call_delete_product(self):
 		deleteProductView = DeleteProductView(self.delete_product, self)
@@ -74,6 +89,8 @@ class Home(TK.Tk):
 	
 	def create_product(self, product):
 		self.storage.append(product)
+		modification = ModificationEntry(item = product)
+		self.modifications.append(modification)
 		self.__recreate_table()
 	
 	def delete_product(self, id):
@@ -83,5 +100,7 @@ class Home(TK.Tk):
 				index = i
 				break
 		if (index != -1):
+			modification = ModificationEntry(item = self.storage[i], type="Remoção")
+			self.modifications.append(modification)
 			del self.storage[i]
 			self.__recreate_table()		

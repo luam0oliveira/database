@@ -16,10 +16,11 @@ class CsvRepository:
 		self.fileAdapter.writeToFile(f"{self.path}/storage.csv", csvText)
 	
 	def saveHistory(self, listOfItems):
-		csvText = "Id,Timestamp,Data,Tipo,Id item,Item,Quantidade,Preço\n"
+		# csvText = "Id,Timestamp,Data,Tipo,Id item,Item,Quantidade,Preço\n"
+		csvText = ""
 		for item in listOfItems:
 			if not isinstance(item, ModificationEntry): continue
-			csvText += f"{str(item)}\n"
+			csvText += f"{str(item)}"
 
 		self.fileAdapter.appendToFile(f"{self.path}/history.csv", csvText)
 
