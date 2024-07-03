@@ -7,7 +7,7 @@ print(str(StorageItem()))
 print(str(ModificationEntry()))
 
 print(str(StorageItem(name="Escudo", id="abc", price=100, amount=20)))
-print(str(ModificationEntry(id="asldkfja", type="Modificação", item=StorageItem(name="Escudo", id="abc", price=100, amount=20))))
+print(str(ModificationEntry(id="asldkfja", type="update", item=StorageItem(name="Escudo", id="abc", price=100, amount=20))))
 
 repo = CsvRepository()
 storageItems = [
@@ -26,14 +26,14 @@ for item in storageItems2:
 
 
 modifications = [
-	ModificationEntry(type="Criação", item=StorageItem(name="Escudo", price=100, amount=20)),
-	ModificationEntry(type="Remoção", item=StorageItem(name="Escudo", price=100, amount=20)),
-	ModificationEntry(type="Criação", item=StorageItem(name="Vassoura", price=4, amount=6)),
-	ModificationEntry(type="Modificação", item=StorageItem(name="Vassoura", price=100, amount=20)),
+	ModificationEntry(type="create", item=StorageItem(name="Escudo", price=100, amount=20)),
+	ModificationEntry(type="remove", item=StorageItem(name="Escudo", price=100, amount=20)),
+	ModificationEntry(type="create", item=StorageItem(name="Vassoura", price=4, amount=6)),
+	ModificationEntry(type="update", item=StorageItem(name="Vassoura", price=100, amount=20)),
 ]
 
-repo.saveHistory(modifications)
-modifications2 = repo.loadHistory()
+repo.saveLogs(modifications)
+modifications2 = repo.loadLogs()
 
 print("----------------")
 for item in modifications2:

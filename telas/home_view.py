@@ -18,6 +18,7 @@ class Home(TK.Tk):
 		self.container.rowconfigure((1), weight=9)
 		self.container.columnconfigure((0), weight=1)
 		self.csvRepository = CsvRepository()
+		self.geometry("1000x600")
 		self.modifications = []
 		self.storage = self.csvRepository.load()
 		self.inicializar()
@@ -35,7 +36,7 @@ class Home(TK.Tk):
 		entryValue = getValueFromEntry()
 		storageValue = getattr(self.storage[index], field)
 		if entryValue != str(storageValue):
-			modification = ModificationEntry(type="Modificação", item = self.storage[index])
+			modification = ModificationEntry(type="update", item = self.storage[index])
 			self.modifications.append(modification)
 			setattr(self.storage[index], field, entryValue)
 
@@ -80,7 +81,7 @@ class Home(TK.Tk):
 		self.buttonSave.focus()
 		self.csvRepository.save(self.storage)
 		if len(self.modifications):
-			self.csvRepository.saveHistory(self.modifications)
+			self.csvRepository.saveLogs(self.modifications)
 			self.modifications.clear()
 	
 	def __call_delete_product(self):
@@ -100,7 +101,7 @@ class Home(TK.Tk):
 				index = i
 				break
 		if (index != -1):
-			modification = ModificationEntry(item = self.storage[i], type="Remoção")
+			modification = ModificationEntry(item = self.storage[i], type="remove")
 			self.modifications.append(modification)
 			del self.storage[i]
 			self.__recreate_table()		

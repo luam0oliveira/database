@@ -8,7 +8,7 @@ from telas.scrollable_container import ScrollableContainer
 class ScrollableModificationList(ScrollableContainer):
 	def __init__(self, parent, *args, **kw):
 		super().__init__(parent, *args, **kw)
-		self.line_colors = {"Criação": "green", "Modificação": "yellow", "Remoção": "red"}
+		self.line_colors = {"create": "green", "update": "yellow", "remove": "red"}
 
 	def createList(self, list=[]):
 		self.__clearElements()

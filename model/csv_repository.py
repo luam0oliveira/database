@@ -1,11 +1,16 @@
 from .file_adapter import FileAdapter
 from .storage_item import StorageItem
 from .modification_entry import ModificationEntry
+from .google_sheets_api import GoogleSheetsApi
 
 class CsvRepository:
 	def __init__(self):
 		self.fileAdapter = FileAdapter()
+		self.backupApi = GoogleSheetsApi()
 		self.path = "data"
+		self.storageSheetId = "1aVDE_u-VzLTQzyPmHEFpqsJ0We692MNcBITWmBDMxCM"
+		self.logsSheetId = "1eDaHmUgsEXwzhaj-1uAPsHv1-8pz6FNrXdLW0z1Gg9s"
+		
 
 	def save(self, listOfItems):
 		csvText = "Id,Item,Quantidade,Preço\n"
@@ -13,16 +18,18 @@ class CsvRepository:
 			if not isinstance(item, StorageItem): continue
 			csvText += f"{str(item)}\n"
 
+		self.backupApi.saveCSVtoSheets(csvText, self.storageSheetId)		
 		self.fileAdapter.writeToFile(f"{self.path}/storage.csv", csvText)
 	
-	def saveHistory(self, listOfItems):
-		# csvText = "Id,Timestamp,Data,Tipo,Id item,Item,Quantidade,Preço\n"
-		csvText = ""
-		for item in listOfItems:
+	def saveLogs(self, listOfItems):
+		csvText = "Id,Timestamp,Data,Tipo,Id item,Item,Quantidade,Preço\n"
+  
+		for item in  self.loadLogs()+listOfItems:
 			if not isinstance(item, ModificationEntry): continue
-			csvText += f"{str(item)}"
+			csvText += f"{str(item)}\n"
 
-		self.fileAdapter.appendToFile(f"{self.path}/history.csv", csvText)
+		self.backupApi.saveCSVtoSheets(csvText, self.logsSheetId)
+		self.fileAdapter.writeToFile(f"{self.path}/logs.csv", csvText)
 
 	def load(self):
 		csvText = self.fileAdapter.readFile(f"{self.path}/storage.csv")
@@ -39,8 +46,8 @@ class CsvRepository:
 				items.append(storageItem)
 		return items
 
-	def loadHistory(self):
-		csvText = self.fileAdapter.readFile(f"{self.path}/history.csv")
+	def loadLogs(self):
+		csvText = self.fileAdapter.readFile(f"{self.path}/logs.csv")
 		lines = csvText.split("\n")
 		items = []
 

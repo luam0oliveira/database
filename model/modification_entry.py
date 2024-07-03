@@ -3,7 +3,7 @@ import datetime
 from model.storage_item import StorageItem
 
 class ModificationEntry:
-	def __init__(self, id=str(uuid.uuid4()), timestamp=datetime.datetime.today().timestamp(), type="Criação", item=None):
+	def __init__(self, id=str(uuid.uuid4()), timestamp=datetime.datetime.today().timestamp(), type="create", item=None):
 		self.id = id
 		self.timestamp = timestamp
 		self.date = str(datetime.datetime.fromtimestamp(self.timestamp))
