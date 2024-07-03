@@ -14,7 +14,8 @@ class Home(TK.Tk):
 	def __init__(self):
 		super().__init__()
 		self.container = TK.Frame(self.master)
-		self.container.rowconfigure((0), weight=1, minsize= 50)
+		self.geometry("1000x600")
+		self.container.rowconfigure((0), weight=1, minsize=50)
 		self.container.rowconfigure((1), weight=9)
 		self.container.columnconfigure((0), weight=1)
 		self.csvRepository = CsvRepository()
@@ -42,7 +43,7 @@ class Home(TK.Tk):
 	def __add_table(self):
 		self.table = ScrollableStockList(self.container)
 		self.table.createList(self.storage, self.callback)
-		self.table.grid(row=1, column=0, sticky="NSEW")
+		self.table.grid(row=1, column=0, sticky="NSEW", padx=10)
 		
 	def __add_header(self, master):
 		header = TK.Frame(master, background="blue")
@@ -54,7 +55,7 @@ class Home(TK.Tk):
 
 	def __add_button_adicionar_produto(self, master):
 		button = TK.Button(master, text="Adicionar produto", command=self.__call_create_product)
-		button.pack(side="left")
+		button.pack(side="left", padx=10)
 	
 	def __add_button_remove(self, master):
 		button = TK.Button(master, text="Remover produto", command=self.__call_delete_product)
@@ -62,7 +63,7 @@ class Home(TK.Tk):
 		
 	def __add_button_salvar(self, master):
 		self.buttonSave = TK.Button(master, text="Salvar", command=self.__call_save)
-		self.buttonSave.pack(side="right")
+		self.buttonSave.pack(side="right", padx=10)
 
 	def __call_create_product(self):
 		createProductView = CreateProductView(self.create_product, self)
