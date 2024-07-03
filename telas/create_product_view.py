@@ -22,7 +22,7 @@ class CreateProductView(Tk.Toplevel):
 		self.__create_entry_amount()
 		self.__create_entry_price()
 		self.__create_button_create()
-		self.container.pack()
+		self.container.pack(padx=10, pady=10)
 
 	def __create_entry_name(self):
 		label = Tk.Label(self.container, text="Nome: ")
