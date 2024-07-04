@@ -15,7 +15,7 @@ class DeleteProductView(Tk.Toplevel):
 		self.id = Tk.StringVar(self)
 		self.__create_entry_id()
 		self.__create_button_delete()
-		self.container.pack()
+		self.container.pack(padx=10, pady=10)
 
 	def __create_entry_id(self):
 		label = Tk.Label(self.container, text="Id: ")

@@ -44,7 +44,7 @@ class Home(TK.Tk):
 	def __add_table(self):
 		self.table = ScrollableStockList(self.container)
 		self.table.createList(self.storage, self.callback)
-		self.table.grid(row=1, column=0, sticky="NSEW", padx=10)
+		self.table.grid(row=1, column=0, sticky="NSEW")
 		
 	def __add_header(self, master):
 		header = TK.Frame(master, background="blue")
