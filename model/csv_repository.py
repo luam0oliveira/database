@@ -1,3 +1,4 @@
+import os
 from .file_adapter import FileAdapter
 from .storage_item import StorageItem
 from .modification_entry import ModificationEntry
@@ -8,9 +9,9 @@ class CsvRepository:
 		self.fileAdapter = FileAdapter()
 		self.backupApi = GoogleSheetsApi()
 		self.path = "data"
-		self.storageSheetId = "1aVDE_u-VzLTQzyPmHEFpqsJ0We692MNcBITWmBDMxCM"
-		self.logsSheetId = "1eDaHmUgsEXwzhaj-1uAPsHv1-8pz6FNrXdLW0z1Gg9s"
 		
+		self.logsSheetId = "1eDaHmUgsEXwzhaj-1uAPsHv1-8pz6FNrXdLW0z1Gg9s"
+		self.storageSheetId = "1aVDE_u-VzLTQzyPmHEFpqsJ0We692MNcBITWmBDMxCM"
 
 	def save(self, listOfItems):
 		csvText = "Id,Item,Quantidade,Preço\n"

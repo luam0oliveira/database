@@ -2,6 +2,7 @@ import os
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+
 class GoogleSheetsApi:
 	def __init__(self):
 		self.creds = service_account.Credentials.from_service_account_file(
@@ -11,7 +12,6 @@ class GoogleSheetsApi:
 	
 	def saveCSVtoSheets(self, csvText, spreadsheetId):
 		service = build('sheets', 'v4', credentials=self.creds)
-
 
 		height = len(csvText.splitlines())
 		if height <= 0:
