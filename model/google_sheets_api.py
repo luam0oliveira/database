@@ -26,6 +26,11 @@ class GoogleSheetsApi:
 		for row in csvText.splitlines():
 			csv_values.append(row.split(','))
 
+		service.spreadsheets().values().clear( 
+			spreadsheetId=spreadsheetId, 
+			range="Sheet1!A1:Z200"
+		).execute()
+
 		request = service.spreadsheets().values().update(
 			spreadsheetId=spreadsheetId,
 			range=range_name,
