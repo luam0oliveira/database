@@ -16,7 +16,7 @@ class CsvRepository:
 	def save(self, listOfItems):
 		csvText = "Id,Item,Quantidade,Preço\n"
 		for item in listOfItems:
-			if not isinstance(item, StorageItem): continue
+			if not isinstance(item, StorageItem): continue 
 			csvText += f"{str(item)}\n"
 
 		self.backupApi.saveCSVtoSheets(csvText, self.storageSheetId)		
